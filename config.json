@@ -1,0 +1,69 @@
+{
+    "name": "REDCap Field Encryption Module",
+    "namespace": "CERCHECW\\FieldEncryptionModule",
+    "description": "Encrypts sensitive field values (like email addresses) so they are completely hidden from researchers but accessible to the system for automated invitations and notifications. Supports longitudinal projects and surveys. Use @ENCRYPT action tag on fields to enable encryption.",
+    "authors": [
+        {
+        "name": "Kshitiz Pokhrel",
+        "email": "kpokhrel@torontomu.ca",
+        "institution": "CERC in Health Equity & Community Well-Being, Toronto Metropolitan University"
+        },
+        {
+        "name": "Ryan McRonald",
+        "email": "rmcronald@uvic.ca",
+        "institution": "University of Victoria"
+        }
+    ],
+    "framework-version": 14,
+    "compatibility":{
+        "php-version-min":"7.4.0",
+        "redcap-version-min":"15.0.0"
+    },
+    "system-settings":[
+        {
+            "key":"encryption-key",
+            "name":"Master Encryption Key",
+            "type":"text",
+            "required":true
+        }
+    ],
+    "crons": [
+        {
+            "cron_name": "process_encrypted_asi",
+            "cron_description": "Process Automated Survey Invitations with encrypted emails before REDCap's cron",
+            "method": "processScheduledSurveyInvitations",
+            "cron_frequency": "30",
+            "cron_max_run_time": "60"
+        }
+    ],
+    "hooks": [
+        {
+            "hook": "redcap_save_record",
+            "description": "Encrypt fields after record save"
+        },
+        {
+            "hook": "redcap_survey_complete",
+            "description": "Encrypt fields after survey completion"
+        },
+        {
+            "hook": "redcap_email",
+            "description": "Decrypt email addresses for automated invitations"
+        },
+        {
+            "hook": "redcap_data_entry_form",
+            "description": "Mask encrypted values in data entry forms"
+        },
+        {
+            "hook": "redcap_data_entry_form_top",
+            "description": "Show privacy notice on forms"
+        },
+        {
+            "hook": "redcap_survey_page",
+            "description": "Mask encrypted values on survey pages"
+        },
+        {
+            "hook": "redcap_report_data",
+            "description": "Mask encrypted values in reports"
+        }
+    ]
+}
