@@ -1,10 +1,13 @@
 <?php
 namespace CERCHECW\FieldEncryptionModule;
 
-/** 
- * Basic AES-256-CTR encryption/decryption without any safety mechanisms.
+/**
+ * Basic AES-256-CTR encryption/decryption.
+ *
+ * Source: https://stackoverflow.com/questions/9262109/simplest-two-way-encryption-using-php
+ * Author: Scott Arciszewski
+ * License: CC BY-SA 4.0
  */
-
 class UnsafeCrypto
 {
     const METHOD = 'aes-256-ctr';

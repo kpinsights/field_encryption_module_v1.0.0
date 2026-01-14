@@ -45,6 +45,8 @@ The module uses SaferCrypto, which implements AES-256-CTR with HMAC-SHA256 authe
 
 Encrypted values are base64 encoded, converted to URL-safe characters, and formatted as `ENC_[data]@xx.xx`. This format passes REDCap's email validation while being obviously not a real address.
 
+The encryption classes (UnsafeCrypto and SaferCrypto) are based on code by [Scott Arciszewski](https://stackoverflow.com/questions/9262109/simplest-two-way-encryption-using-php), licensed under CC BY-SA 4.0.
+
 ## What the Module Does at Each Step
 
 **On record save / survey submit:**

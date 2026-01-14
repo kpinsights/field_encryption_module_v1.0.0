@@ -2,8 +2,12 @@
 namespace CERCHECW\FieldEncryptionModule;
 
 /**
- * Authenticated encryption wrapper
- * Adds HMAC authentication to prevent tampering
+ * Authenticated encryption wrapper.
+ * Adds HMAC authentication to prevent tampering.
+ *
+ * Source: https://stackoverflow.com/questions/9262109/simplest-two-way-encryption-using-php
+ * Author: Scott Arciszewski
+ * License: CC BY-SA 4.0
  */
 class SaferCrypto extends UnsafeCrypto
 {
