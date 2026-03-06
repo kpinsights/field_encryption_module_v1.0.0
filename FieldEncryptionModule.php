@@ -103,6 +103,17 @@ class FieldEncryptionModule extends AbstractExternalModule
      */
     public function redcap_save_record($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance)
     {
+        // For survey saves, only encrypt when the survey is fully complete.
+        // Paginated surveys fire redcap_save_record on every Next/Previous click,
+        // and encrypting mid-survey causes email validation failures.
+        if (!empty($survey_hash)) {
+            $statusField = $instrument . '_complete';
+            $data = \REDCap::getData($project_id, 'array', [$record], [$statusField], [$event_id]);
+            $status = $data[$record][$event_id][$statusField] ?? 0;
+            if ($status < 2) {
+                return;
+            }
+        }
         $this->encryptRecordData($project_id, $record, $instrument, $event_id, $repeat_instance);
     }
 
