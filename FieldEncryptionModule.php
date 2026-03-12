@@ -345,7 +345,7 @@ class FieldEncryptionModule extends AbstractExternalModule
 
                 // Check for our encrypted format
                 if (currentValue.indexOf('ENC_') === 0 && currentValue.indexOf('@xx.xx') !== -1) {
-                    field.val('[ENCRYPTED]');
+                    field.val('');
                     field.prop('readonly', true);
                     field.prop('disabled', false);
                     field.css({
