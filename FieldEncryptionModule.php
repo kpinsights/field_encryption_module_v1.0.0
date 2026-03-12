@@ -203,7 +203,8 @@ class FieldEncryptionModule extends AbstractExternalModule
             // Save the encrypted values back
             if (!empty($updatedData)) {
                 $saveData = [$record => [$event_id => $updatedData]];
-                $result = \REDCap::saveData($project_id, 'array', $saveData, 'overwrite');
+                $result = \REDCap::saveData($project_id, 'array', $saveData, 'overwrite', 'YMD', 'flat', null, true, true, true, false, true, null, false, true, false, false, false, null, false, "", false, false, true, false, false);
+
 
                 if (empty($result['errors'])) {
                     $this->log("Encrypted fields saved", [
