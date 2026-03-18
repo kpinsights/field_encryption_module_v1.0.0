@@ -8,11 +8,11 @@ REDCap's Automated Survey Invitations require an email field to send follow-up s
 
 ## What This Module Does
 
-When a participant enters their email, the module immediately encrypts it and saves it back to the database in a format like `ENC_abc123xyz...@xx.xx`. This fake email format passes REDCap's email validation but is unreadable.
+When a participant submits their survey, the module encrypts it and saves it back to the database in a format like `ENC_abc123xyz...@xx.xx`. This fake email format passes REDCap's email validation but is unreadable.
 
 When it's time to send a survey invitation, a cron job decrypts the email address and sends the invitation. The participant receives their survey. Staff never see the real email.
 
-In data entry forms and reports, the field displays `[ENCRYPTED]`.
+In data entry forms and reports, the field displays `encrypted@xx.xx`.
 
 ## Requirements
 
@@ -51,14 +51,15 @@ The encryption classes (UnsafeCrypto and SaferCrypto) are based on code by [Scot
 
 **On record save / survey submit:**
 - Hooks `redcap_save_record` and `redcap_survey_complete` fire
+- For survey saves, encryption is deferred until the form status is Complete — this prevents validation errors on paginated surveys
 - Module reads the data dictionary for fields with `@ENCRYPT`
 - Fetches the saved record data via `REDCap::getData()`
-- Encrypts any unencrypted values and saves them back via `REDCap::saveData()`
+- Encrypts any unencrypted values and saves them back via `REDCap::saveData()` with `$bypassValidationCheck` enabled
 - If the encrypted field is the project's designated participant email field, updates `redcap_surveys_participants` table so ASI can find it
 
 **On data entry form load:**
 - Shows a privacy notice banner at the top of forms with encrypted fields
-- JavaScript replaces any `ENC_...@xx.xx` values with `[ENCRYPTED]`
+- JavaScript replaces any `ENC_...@xx.xx` values with `encrypted@xx.xx`
 - The field becomes read-only with an overlay blocking interaction
 - Validation handlers are removed to prevent popups
 
@@ -109,7 +110,7 @@ The encryption classes (UnsafeCrypto and SaferCrypto) are based on code by [Scot
 
 **Field not encrypting:** Verify `@ENCRYPT` is in the field's action tags. Check EM logs for "Could not fetch record data" which indicates an event/instrument mismatch.
 
-**Still seeing encrypted string instead of [ENCRYPTED]:** Browser might be blocking JavaScript. Check console for errors.
+**Still seeing encrypted string instead of `encrypted@xx.xx`:** Browser might be blocking JavaScript. Check console for errors.
 
 ## Authors
 
