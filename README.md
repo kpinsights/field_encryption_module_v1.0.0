@@ -18,7 +18,7 @@ In data entry forms and reports, the field displays `encrypted@xx.xx`.
 
 - REDCap 15.0.0+
 - PHP 7.4.0+
-- External Module Framework v14
+- External Module Framework v16
 - Working mail configuration (Postfix, sendmail, or SMTP)
 
 ## Installation
